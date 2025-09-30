@@ -71,7 +71,7 @@ ActionStatus BT_SequenceNode::Act()
 		else
 		{
 
-
+			
 			
 
 			// TASK TODO
@@ -81,10 +81,8 @@ ActionStatus BT_SequenceNode::Act()
 			//  - use BT_FallbackNode::Act() as a guide
 		
 
-			//	# PSEUDOCODE
-			//  
+			// ========== Pseudocode ============
 			// 	Get Current Child Node Status
-			//	
 			//  IF Current Child Node = SUCCESS:
 			//		IF Current Child = Last Child:
 			//			Status = SUCCESS
@@ -96,7 +94,26 @@ ActionStatus BT_SequenceNode::Act()
 			//		Status = RUNNING
 
 			ActionStatus _actionResult = selectedOption->GetOptionAction()->PerformAction(*actorBlackboard);
+			
 
+			if (_actionResult == ActionStatus::ACTION_SUCCESS) {
+				if (runningOptionIndex == options.size() - 1) {
+					std::cout << "[" << actorBlackboard->GetActorContext()->GetActorID() << "] BT Log: Sequence Node Complete - Success " << std::endl;
+					SetStatus(ActionStatus::ACTION_SUCCESS);
+				}
+				else {
+					std::cout << "[" << actorBlackboard->GetActorContext()->GetActorID() << "] BT Log: Sequence Node " << reasonerID << " is moving to next option " << runningOptionIndex << ", as it is the last child."  << std::endl;
+					runningOptionIndex++;
+				}
+			}
+			else if (_actionResult == ActionStatus::ACTION_FAILURE) {
+				std::cout << "[" << actorBlackboard->GetActorContext()->GetActorID() << "] BT Log: Sequence Node " << reasonerID << " Action has Failed " << std::endl;
+				SetStatus(ActionStatus::ACTION_FAILURE);
+			}
+			else if (_actionResult == ActionStatus::ACTION_RUNNING) {
+				std::cout << "[" << actorBlackboard->GetActorContext()->GetActorID() << "] BT Log: Sequence Node - Running " << std::endl;
+				SetStatus(ActionStatus::ACTION_RUNNING);
+			}
 
 		}
 	
