@@ -1,2 +1,4 @@
 # CMP304_Week3
-CMP304_Week3 Behaviour Trees
+Behaviour Trees in c++
+Name: Sebastian Sroczyk
+SN: 2403259
